@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { getUserList } from "../utils/request";
 import Breadcrumb from "../components/Breadcrumb";
 import * as echarts from "echarts";
 export default {
@@ -83,9 +84,12 @@ export default {
   data() {
     return {
       breadcrumbList: ["您的位置", "系统首页"],
+      userList: [],
     };
   },
   mounted() {
+    // 获取用户列表
+    this.getUserList();
     // 基于准备好的dom，初始化echarts实例
     var barBox = echarts.init(document.getElementById("barBox"));
     var lineBox = echarts.init(document.getElementById("lineBox"));
@@ -167,6 +171,12 @@ export default {
         },
       ],
     });
+  },
+  methods: {
+    async getUserList() {
+      const res = await getUserList();
+      this.userList = res.data;
+    },
   },
 };
 </script>

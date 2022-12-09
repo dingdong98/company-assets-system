@@ -23,8 +23,8 @@
       <el-table-column prop="inventory" label="库存"></el-table-column>
       <el-table-column label="操作" width="240px">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="detailBook(scope.row)">详情</el-button>
-          <el-button type="success" size="mini" @click="editBook(scope.row)">编辑</el-button>
+          <el-button type="success  " size="mini" @click="detailBook(scope.row)">详情</el-button>
+          <el-button type="primary" size="mini" @click="editBook(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="deleteBook(scope.row.bookId)">删除</el-button>
         </template>
       </el-table-column>
@@ -223,11 +223,13 @@
       // 提交编辑后的图书信息
       submitEdit(bookInfo) {
         this.$confirm('确认提交？')
-          .then(_ => {
+          .then(() => {
             this.editBookInfo(bookInfo)
             this.bookEditDialog = false
           })
-          .catch(_ => {});
+          .catch(error => {
+            this.$message.error(error)
+          });
       }
     },
   };

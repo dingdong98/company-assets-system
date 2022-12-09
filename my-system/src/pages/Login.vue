@@ -37,8 +37,7 @@
 </template>
 
 <script>
-// import { getRequest, postRequest } from "../untils/api";
-import { getCode, loginSubmit } from "../untils/request";
+import { getCode, loginSubmit } from "../utils/request";
 export default {
   name: "Login",
   data() {
@@ -80,19 +79,6 @@ export default {
           this.$message.success(res.msg);
           sessionStorage.setItem("token", res.token);
         }
-
-        // if (valid) {
-        //   postRequest("/login", this.loginForm).then((resp) => {
-        //     if (resp.code !== 0) {
-        //       this.updateCaptcha();
-        //       return this.$message.error(resp.msg);
-        //     }
-        //     this.$router.replace({ name: "index" });
-
-        //   });
-        // } else {
-        //   return false;
-        // }
       });
     },
     // 重置
@@ -107,9 +93,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      // getCode().then((resp) => {
-      //   this.captchaUrl = resp;
-      // });
     },
   },
 };

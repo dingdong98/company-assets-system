@@ -4,20 +4,31 @@
     <Breadcrumb :breadcrumbList="breadcrumbList"></Breadcrumb>
     <el-card class="margin-top-20">
       <div class="searchAndAdd">
-        <!-- <span>账号：</span>
-        <el-input v-model="account" placeholder="请输入账号"></el-input> -->
         <span class="margin-left-10">用户名：</span>
         <el-input v-model="userName" placeholder="请输入用户名"></el-input>
-        <el-button type="primary" @click="searchUser" class="margin-left-10">查询</el-button>
+        <el-button type="primary" @click="searchUser" class="margin-left-10"
+          >查询</el-button
+        >
         <el-button type="primary" @click="addUser">创建</el-button>
       </div>
       <el-table
-        :data="userList.slice((currentPage - 1) * pageSize, currentPage * pageSize)"
+        :data="
+          userList.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        "
         stripe
         border
-        style="width: 100%; margin-top: 40px;">
-        <el-table-column prop="account" label="账号" width="120"></el-table-column>
-        <el-table-column prop="userName" label="用户名" width="100"></el-table-column>
+        style="width: 100%; margin-top: 40px"
+      >
+        <el-table-column
+          prop="account"
+          label="账号"
+          width="120"
+        ></el-table-column>
+        <el-table-column
+          prop="userName"
+          label="用户名"
+          width="100"
+        ></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="role" label="角色" width="100">
           <template slot-scope="scope">
@@ -25,7 +36,11 @@
             <span v-else>普通用户</span>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="120"></el-table-column>
+        <el-table-column
+          prop="phone"
+          label="手机号"
+          width="120"
+        ></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="status" label="状态" width="80">
           <template slot-scope="scope">
@@ -36,8 +51,15 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="editUser(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteUser(scope.row.userId)">删除</el-button>
+            <el-button type="primary" size="mini" @click="editUser(scope.row)"
+              >编辑</el-button
+            >
+            <el-button
+              type="danger"
+              size="mini"
+              @click="deleteUser(scope.row.userId)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -59,7 +81,8 @@
       title="编辑用户信息"
       :visible.sync="userEditDialog"
       width="40%"
-      :before-close="handleCreateClose">
+      :before-close="handleCreateClose"
+    >
       <el-form label-width="80px" :model="userInfo">
         <el-form-item label="账号">
           <el-input v-model="userInfo.account" disabled></el-input>
@@ -84,7 +107,8 @@
           <el-switch
             v-model="userInfo.status"
             active-color="#13ce66"
-            inactive-color="#ff4949">
+            inactive-color="#ff4949"
+          >
           </el-switch>
         </el-form-item>
         <el-form-item label="备注">
@@ -93,7 +117,9 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="userEditDialog = false">取 消</el-button>
-        <el-button type="primary" @click="submitEdit(userInfo)">确 定</el-button>
+        <el-button type="primary" @click="submitEdit(userInfo)"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
 
@@ -102,8 +128,14 @@
       title="创建用户"
       :visible.sync="userCreateDialog"
       width="40%"
-      :before-close="handleCreateClose">
-      <el-form label-width="80px" :model="createUser" ref="createUser" :rules="userRules">
+      :before-close="handleCreateClose"
+    >
+      <el-form
+        label-width="80px"
+        :model="createUser"
+        ref="createUser"
+        :rules="userRules"
+      >
         <el-form-item label="账号" prop="account">
           <el-input v-model="createUser.account"></el-input>
         </el-form-item>
@@ -123,7 +155,8 @@
               v-for="item in roleOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -139,188 +172,182 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="userCreateDialog = false">取 消</el-button>
-        <el-button type="primary" @click="submitCreate(createUser)">确 定</el-button>
+        <el-button type="primary" @click="submitCreate(createUser)"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import Breadcrumb from '../components/Breadcrumb'
-  import {getRequest, postRequest} from '../untils/api'
-  export default {
-    name: 'Users',
-    components: { Breadcrumb },
-    data() {
-      return {
-        breadcrumbList: ["您的位置", "用户管理"],
-        // account: '',
-        userName: '',
-        userList: [],
-        currentPage: 1,
-        pageSize: 8,
-        currentPage4: 1,
-        userInfo: {},
-        userEditDialog: false,
-        userCreateDialog: false,
-        createUser: {
-          account: '',
-          password: '123456',
-          userName: '',
-          sex: '',
-          role: 1,
-          phone: '',
-          email: '',
-          status: 1,
-          remark: ''
+import {
+  getUserList,
+  createUser,
+  searchUser,
+  editUser,
+  deleteUser,
+} from "@/utils/request";
+import Breadcrumb from "../components/Breadcrumb";
+export default {
+  name: "Users",
+  components: { Breadcrumb },
+  data() {
+    return {
+      breadcrumbList: ["您的位置", "用户管理"],
+      // account: '',
+      userName: "",
+      userList: [],
+      currentPage: 1,
+      pageSize: 8,
+      currentPage4: 1,
+      userInfo: {},
+      userEditDialog: false,
+      userCreateDialog: false,
+      createUser: {
+        account: "",
+        password: "123456",
+        userName: "",
+        sex: "",
+        role: 1,
+        phone: "",
+        email: "",
+        status: 1,
+        remark: "",
+      },
+      roleOptions: [
+        {
+          value: 1,
+          label: "超级管理员",
         },
-        roleOptions: [
-          {
-            value: 1,
-            label: '超级管理员'
-          }, {
-            value: 0,
-            label: '普通用户'
-          }
+        {
+          value: 0,
+          label: "普通用户",
+        },
+      ],
+      userRules: {
+        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        userName: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
         ],
-        userRules: {
-          account: [
-            { required: true, message: '请输入账号', trigger: 'blur' },
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-          ],
-          userName: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
-          ],
-          role: [
-            { required: true, message: '请选择角色', trigger: 'blur' },
-          ],
-          status: [
-            { required: true, message: '请选择状态', trigger: 'blur' },
-          ]
-        }
+        role: [{ required: true, message: "请选择角色", trigger: "blur" }],
+        status: [{ required: true, message: "请选择状态", trigger: "blur" }],
+      },
+    };
+  },
+  mounted() {
+    this.getAllUsers();
+  },
+  methods: {
+    // 获取所有用户
+    async getAllUsers() {
+      const res = await getUserList();
+      if (res.code !== 0) {
+        return this.$message.error("获取失败！");
       }
+      this.userList = res.data;
     },
-    mounted() {
-      this.getAllUsers()
-    },
-    methods: {
-      // 获取所有用户
-      getAllUsers() {
-        getRequest('/users').then(resp => {
-          if(resp.code !== 0) {
-            return this.$message.error('获取失败！')
-          }
-          this.userList = resp.data
-        })
-      },
-      // 查询用户
-      searchUser() {
-        getRequest('/users/search', {userName: this.userName}).then(resp => {
-          if(resp.code !== 0) {
-            this.$message.error('查询失败！')
-          }
-          this.$message.success(resp.msg)
-          this.userList = resp.data
-        })
-        this.userName = ""
-      },
-      // 添加用户
-      addUser() {
-        this.userCreateDialog = true
-      },
-      // 编辑用户
-      editUser(userInfo) {
-        let user = {...userInfo}
-        if(user.status === 1) {
-          user.status = true
-        }else {
-          user.status = false
-        }
-        this.userInfo = user
-        this.userEditDialog = true
-      },
-      // 删除用户
-      deleteUser(userId) {
-        this.$confirm('确认删除？')
-          // eslint-disable-next-line no-unused-vars
-          .then(_ => {
-            postRequest('/users/delete', {userId}).then(resp => {
-              if(resp.code !== 0) {
-                return this.$message.error('删除失败！')
-              }
-              this.$message.success(resp.msg)
-              this.getAllUsers()
-            })
-
-          })
-          // eslint-disable-next-line no-unused-vars
-          .catch(_ => {});
-      },
-      handleSizeChange(val) {
-        this.pageSize = val
-      },
-      handleCurrentChange(val) {
-        this.currentPage = val
-      },
-      // 提交编辑后的用户信息
-      submitEdit(userInfo) {
-        if(userInfo.status) {
-          userInfo.status = 1
-        }else {
-          userInfo.status = 0
-        }
-        console.log(userInfo);
-        postRequest('/users/edit', userInfo).then(resp => {
-          if(resp.code !== 0) {
-            this.$message.error('编辑失败！')
-          }
-          this.$message.success(resp.msg)
-          this.getAllUsers()
-        })
-        this.userEditDialog = false
-      },
-      // 创建用户
-      submitCreate(userInfo) {
-        const dateTime = new Date()
-        userInfo.createTime = this.$moment(dateTime).format('YYYY-MM-DD HH:DD:SS')
-        this.$refs['createUser'].validate((valid) => {
-          if (valid) {
-            postRequest('/users/add', userInfo).then(resp => {
-              if(resp.code !== 0) {
-                this.$message.error('添加失败！')
-              }
-              this.$message.success(resp.msg)
-              this.getAllUsers()
-            })
-            this.userCreateDialog = false
-            this.$refs['createUser'].resetFields();
-          } else {
-            return false;
-          }
-        });
-        
-      },
-      handleCreateClose() {
-        this.userEditDialog = false
-        this.userCreateDialog = false
+    // 查询用户
+    async searchUser() {
+      const res = await searchUser(this.userName);
+      if (res.code !== 0) {
+        this.$message.error("查询失败！");
       }
-    }
-  }
+      this.$message.success(res.msg);
+      this.userList = res.data;
+      this.userName = "";
+    },
+    // 添加用户
+    addUser() {
+      this.userCreateDialog = true;
+    },
+    // 编辑用户
+    editUser(userInfo) {
+      let user = { ...userInfo };
+      if (user.status === 1) {
+        user.status = true;
+      } else {
+        user.status = false;
+      }
+      this.userInfo = user;
+      this.userEditDialog = true;
+    },
+    // 删除用户
+    deleteUser(userId) {
+      this.$confirm("确认删除？").then(async () => {
+        const res = await deleteUser({ userId });
+        console.log(res);
+        if (res.code !== 0) {
+          return this.$message.error("删除失败！");
+        }
+        this.$message.success(res.msg);
+        this.getAllUsers();
+      });
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
+    // 提交编辑后的用户信息
+    async submitEdit(userInfo) {
+      if (userInfo.status) {
+        userInfo.status = 1;
+      } else {
+        userInfo.status = 0;
+      }
+      console.log(userInfo);
+      const res = await editUser(userInfo);
+      console.log(res);
+      if (res.code !== 0) {
+        this.$message.error("编辑失败！");
+      }
+      this.$message.success(res.msg);
+      this.getAllUsers();
+      this.userEditDialog = false;
+    },
+    // 创建用户
+    submitCreate(userInfo) {
+      const dateTime = new Date();
+      userInfo.createTime = this.$moment(dateTime).format(
+        "YYYY-MM-DD HH:DD:SS"
+      );
+      this.$refs["createUser"].validate(async (valid) => {
+        if (valid) {
+          const res = await createUser(userInfo);
+          if (res.code !== 0) {
+            this.$message.error("添加失败");
+          }
+          this.$message.success(res.msg);
+          this.getAllUsers();
+          this.userCreateDialog = false;
+          this.$refs["createUser"].resetFields();
+        } else {
+          return false;
+        }
+      });
+    },
+    handleCreateClose() {
+      this.userEditDialog = false;
+      this.userCreateDialog = false;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-  .indexContainer {
-    margin-bottom: 60px;
-  }
-  .margin-top-20 {
-    margin-top: 20px;
-  }
-  .margin-left-10 {
-    margin-left: 10px;
-  }
-  .searchAndAdd .el-input {
-    width: 200px;
-  }
+.indexContainer {
+  margin-bottom: 60px;
+}
+.margin-top-20 {
+  margin-top: 20px;
+}
+.margin-left-10 {
+  margin-left: 10px;
+}
+.searchAndAdd .el-input {
+  width: 200px;
+}
 </style>

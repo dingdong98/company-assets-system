@@ -25,13 +25,13 @@
         stripe
         style="width: 100%"
       >
-        <el-table-column label="#" type="index"></el-table-column>
+        <el-table-column label="ID" type="index"></el-table-column>
         <el-table-column prop="className" label="分类名"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间"> </el-table-column>
         <el-table-column prop="note" label="备注"></el-table-column>
         <el-table-column label="操作" width="180">
-          <template #scope="scope">
+          <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="editClass(scope.row)"
               >编辑</el-button
             >
@@ -97,14 +97,20 @@
 
 <script>
 import Breadcrumb from "../components/Breadcrumb";
-import { getRequest, postRequest } from "../untils/api";
+import {
+  createClassify,
+  deleteClassify,
+  editClassify,
+  getAssetsClassify,
+  searchClassify,
+} from "../utils/request";
 export default {
-  name: "Classification",
+  name: "AssetsClassify",
   components: { Breadcrumb },
   data() {
     return {
-      breadcrumbList: ["您的位置", "分类管理"],
-      keyword: "",
+      breadcrumbList: ["您的位置", "资产分类"],
+      keyword: "", //输入的分类名
       classificationData: [],
       showAddDialog: false, // 添加分类弹框
       showEditDialog: false, // 修改分类弹框
@@ -123,47 +129,47 @@ export default {
   },
   methods: {
     // 获取分类
-    getClassify() {
-      getRequest("/classify").then((resp) => {
+    async getClassify() {
+      const res = await getAssetsClassify();
+      if (res.code !== 0) {
+        return this.$message.error("获取分类失败！");
+      }
+      this.classificationData = res.data;
+      /* getRequest("/classify").then((resp) => {
         console.log(resp);
         if (resp.code !== 0) {
           this.$message.error("获取图书分类失败！");
           return;
         }
         this.classificationData = resp.data;
-      });
+      }); */
     },
     // 添加分类
-    addClassification() {
+    async addClassification() {
       const dateTime = new Date();
       this.addClassData.createTime = this.$moment(dateTime).format(
         "YYYY-MM-DD HH:DD:SS"
       );
       this.addClassData.updateTime = "";
-      postRequest("/classify/add", this.addClassData).then((resp) => {
-        if (resp.code !== 0) {
-          this.$message.error("添加失败！");
-          return;
-        }
-        this.$message.success(resp.msg);
-        this.getClassify();
-        this.$refs.addRef.resetFields();
-      });
+      const res = await createClassify(this.addClassData);
+      if (res.code !== 0) {
+        return this.$message.error("添加失败！");
+      }
+      this.$message.success(res.msg);
+      this.getClassify();
+      this.$refs.addRef.resetFields();
       this.showAddDialog = false;
     },
     // 查询分类名
-    searchClassName() {
+    async searchClassName() {
       console.log(this.keyword);
-      getRequest("/classify/search", { className: this.keyword }).then(
-        (resp) => {
-          console.log(resp);
-          if (resp.code !== 0) {
-            this.$message.error("查询失败！");
-          }
-          this.$message.success(resp.msg);
-          this.classificationData = resp.data;
-        }
-      );
+      const res = await searchClassify(this.keyword);
+      console.log(res);
+      if (res.code !== 0) {
+        return this.$message.error("查询失败！");
+      }
+      this.$message.success(res.msg);
+      this.classificationData = res.data;
       this.keyword = "";
     },
     // 点击编辑显示编辑弹框，并把相关数据放进去
@@ -173,35 +179,32 @@ export default {
       this.editClassData = editData;
     },
     // 提交编辑后的数据
-    submitEditClassify() {
+    async submitEditClassify() {
       const dateTime = new Date();
       this.editClassData.updateTime = this.$moment(dateTime).format(
         "YYYY-MM-DD HH:DD:SS"
       );
-      postRequest("/classify/edit", this.editClassData).then((resp) => {
-        if (resp.code !== 0) {
-          this.$message.error("编辑失败！");
-          return;
-        }
-        this.$message.success(resp.msg);
-        this.getClassify();
-        this.showEditDialog = false;
-      });
+      const res = await editClassify(this.editClassData);
+      if (res.code !== 0) {
+        return this.$message.error("编辑失败!");
+      }
+      this.$message.success(res.msg);
+      this.getClassify();
+      this.showEditDialog = false;
     },
     // 删除分类
     delClass(id) {
-      this.$confirm("确定删除？")
-        .then(() => {
-          postRequest("/classify/delete", { id }).then((resp) => {
-            if (resp.code !== 0) {
-              return this.$message.error("删除失败！");
-            }
-            this.$message.success(resp.msg);
-            this.getClassify();
-          });
+      this.$confirm("是否删除?")
+        .then(async () => {
+          const res = await deleteClassify({ id });
+          if (res.code !== 0) {
+            return this.$message.error("删除失败!");
+          }
+          this.$message.success(res.msg);
+          this.getClassify();
         })
         .catch(() => {
-          console.log("取消");
+          this.$message.info("取消删除操作");
         });
     },
     handleSizeChange(val) {

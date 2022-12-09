@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    :default-active="this.$route.path" 
+    :default-active="this.$route.path"
     text-color="#bba491"
     active-text-color="#0a60bd"
     unique-opened
@@ -44,46 +44,41 @@ export default {
         },
         {
           id: 3,
-          authName: "分类管理",
+          authName: "资产分类",
           iconPath: "fenlei2",
           path: "home/classification",
         },
         {
           id: 4,
-          authName: "用户管理",
-          iconPath: "yonghuguanli",
+          authName: "审批管理",
+          iconPath: "shenpi",
           path: "home/borrowing",
         },
         {
           id: 5,
-          authName: "角色管理",
-          iconPath: "jiaoseguanli",
+          authName: "用户管理",
+          iconPath: "yonghuguanli",
           path: "home/users",
         },
         {
           id: 6,
-          authName: "系统日志",
-          iconPath: "xitongrizhi",
+          authName: "角色管理",
+          iconPath: "jiaoseguanli",
           path: "home/role",
         },
         {
           id: 7,
-          authName: "留言建议",
-          iconPath: "liuyanjianyi",
+          authName: "系统日志",
+          iconPath: "xitongrizhi",
           path: "home/log",
         },
         {
           id: 8,
-          authName: "个人中心",
-          iconPath: "xwtubiaoku-20",
-          path: "home/log",
+          authName: "留言建议",
+          iconPath: "liuyanjianyi",
+          path: "home/suggest",
         },
-        {
-          id: 9,
-          authName: "审批管理",
-          iconPath: "shenpi",
-          path: "home/log",
-        },
+      
       ],
     };
   },
