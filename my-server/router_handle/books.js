@@ -22,7 +22,8 @@ exports.search = (req, res) => {
   console.log(query);
   let sql = `select * from ev_books where bookName like '%${query.bookName}%'`
   db.query(sql, (err, results) => {
-    if(err) return res.cc(err)
+    if (err) return res.cc(err)
+    console.log(results)
     res.send({
       code: 0,
       msg: '查询成功！',

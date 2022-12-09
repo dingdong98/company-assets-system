@@ -12,6 +12,8 @@ const classifyRouter = require("./router/classify");
 const booksRouter = require("./router/books");
 // 导入用户列表路由
 const usersRouter = require("./router/users");
+// 导入留言建议路由
+const suggestRouter = require("./router/suggest");
 
 const joi = require("joi");
 const config = require("./config");
@@ -41,6 +43,7 @@ app.use("/api", borrowRouter);
 app.use("/api", classifyRouter);
 app.use("/api", booksRouter);
 app.use("/api", usersRouter);
+app.use("/api", suggestRouter);
 
 app.use((err, req, res, next) => {
   // 数据验证失败
