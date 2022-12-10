@@ -9,11 +9,13 @@ const borrowRouter = require("./router/borrow");
 // 导入图书分类路由
 const classifyRouter = require("./router/classify");
 // 导入图书列表路由
-const booksRouter = require("./router/books");
+const assectRouter = require("./router/assect");
 // 导入用户列表路由
 const usersRouter = require("./router/users");
 // 导入留言建议路由
 const suggestRouter = require("./router/suggest");
+// 导入角色管理路由
+const roleRouter = require("./router/role");
 
 const joi = require("joi");
 const config = require("./config");
@@ -36,14 +38,13 @@ app.use((req, res, next) => {
   next();
 });
 // 导入解析用户信息的中间件
-// const expressJWT = require('express-jwt')
-// app.use(expressJWT({secret: config.jwtSecretKey}).unless({path: [/^\/api\//]}))
 app.use("/api", loginRouter);
 app.use("/api", borrowRouter);
 app.use("/api", classifyRouter);
-app.use("/api", booksRouter);
+app.use("/api", assectRouter);
 app.use("/api", usersRouter);
 app.use("/api", suggestRouter);
+app.use("/api", roleRouter);
 
 app.use((err, req, res, next) => {
   // 数据验证失败

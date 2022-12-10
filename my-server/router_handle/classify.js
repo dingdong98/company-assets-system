@@ -4,7 +4,7 @@ const db = require("../db/index");
 
 // 获取图书分类
 exports.getClassify = (req, res) => {
-  const sql = "select * from ev_classify order by id DESC";
+  const sql = "select * from classify order by id DESC";
   db.query(sql, (err, results) => {
     if (err) return res.cc(err);
     console.log(results);
@@ -21,7 +21,7 @@ exports.getClassify = (req, res) => {
 exports.addClassify = (req, res) => {
   const body = req.body;
   console.log(body);
-  const sql = "insert into ev_classify set ?";
+  const sql = "insert into classify set ?";
   db.query(sql, body, (err, results) => {
     if (err) return res.cc(err);
     res.send({
@@ -35,7 +35,7 @@ exports.addClassify = (req, res) => {
 exports.search = (req, res) => {
   const query = req.query;
   console.log(query);
-  let sql = `select * from ev_classify where className like "%${query.className}%"`;
+  let sql = `select * from classify where className like "%${query.className}%"`;
 
   db.query(sql, (err, results) => {
     if (err) return res.cc(err);
@@ -52,7 +52,7 @@ exports.edit = (req, res) => {
   const body = req.body;
   console.log(body);
   let sql =
-    "update ev_classify set className = ?, note = ?, updateTime = ? where id = ?";
+    "update classify set className = ?, note = ?, updateTime = ? where id = ?";
   db.query(
     sql,
     [body.className, body.note, body.updateTime, body.id],
@@ -70,7 +70,7 @@ exports.edit = (req, res) => {
 exports.delete = (req, res) => {
   const body = req.body;
   console.log(body.id);
-  let sql = "delete from ev_classify where id = ?";
+  let sql = "delete from classify where id = ?";
   db.query(sql, body.id, (err, results) => {
     if (err) return res.cc(err);
     res.send({

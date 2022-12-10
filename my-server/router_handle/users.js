@@ -3,7 +3,7 @@ const db = require("../db/index");
 
 // 获取所有用户信息
 exports.getUsers = (req, res) => {
-  const sql = "select * from ev_users order by account DESC";
+  const sql = "select * from users order by account DESC";
   db.query(sql, (err, results) => {
     if (err) return res.cc(err);
     console.log(results);
@@ -19,7 +19,7 @@ exports.getUsers = (req, res) => {
 // 创建用户
 exports.add = (req, res) => {
   const body = req.body;
-  const sql = "insert into ev_users set ?";
+  const sql = "insert into users set ?";
   db.query(sql, body, (err, results) => {
     if (err) return res.cc(err);
     res.send({
@@ -33,7 +33,7 @@ exports.add = (req, res) => {
 exports.search = (req, res) => {
   const query = req.query;
   console.log(query);
-  let sql = `select * from ev_users where userName like '%${query.userName}%'`;
+  let sql = `select * from users where userName like '%${query.userName}%'`;
   db.query(sql, (err, results) => {
     if (err) return res.cc(err);
     res.send({
@@ -48,7 +48,7 @@ exports.search = (req, res) => {
 exports.edit = (req, res) => {
   const body = req.body;
   console.log(body);
-  const sql = "update ev_users set ? where userId = ?";
+  const sql = "update users set ? where userId = ?";
   db.query(sql, [body, body.userId], (err, results) => {
     if (err) return res.cc(err);
     res.send({
@@ -62,7 +62,7 @@ exports.edit = (req, res) => {
 exports.delete = (req, res) => {
   const body = req.body;
   console.log(body);
-  const sql = "delete from ev_users where userId = ?";
+  const sql = "delete from users where userId = ?";
   db.query(sql, body.userId, (err, results) => {
     if (err) return res.cc(err);
     res.send({

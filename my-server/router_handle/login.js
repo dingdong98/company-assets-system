@@ -15,7 +15,7 @@ let randomCode = "";
 exports.login = (req, res) => {
   const adminInfo = req.body;
   console.log("1", adminInfo);
-  const sql = "select * from ev_users where account = ?";
+  const sql = "select * from users where account = ?";
   db.query(sql, adminInfo.name, (err, results) => {
     if (err) return res.cc(err);
     if (randomCode !== adminInfo.code) return res.cc("验证码输入错误！");
