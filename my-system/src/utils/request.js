@@ -20,15 +20,15 @@ export const loginSubmit = (params) => {
 
 // TODO: 资产管理API
 // 获取资产列表
-export const getAssetsList = (params) => {
+export const getAssectsList = (params) => {
   return api({
-    url: "/books",
+    url: "/assects",
     method: "get",
     data: params,
   });
 };
 // 获取资产分类列表
-export const getAssetsClassify = (params) => {
+export const getAssectsClassify = (params) => {
   return api({
     url: "/classify",
     method: "get",
@@ -36,33 +36,33 @@ export const getAssetsClassify = (params) => {
   });
 };
 // 添加资产
-export const createAssets = (params) => {
+export const createAssects = (params) => {
   return api({
-    url: "/books/add",
+    url: "/assects/add",
     method: "post",
     data: params,
   });
 };
 // 删除资产
-export const deleteAssets = (params) => {
+export const deleteAssects = (params) => {
   return api({
-    url: "/books/delete",
+    url: "/assects/delete",
     method: "post",
     data: params,
   });
 };
 // 修改资产
-export const editAssets = (params) => {
+export const editAssects = (params) => {
   return api({
-    url: "/books/edit",
+    url: "/assects/edit",
     method: "post",
     data: params,
   });
 };
 // 查询资产
-export const searchAssets = (params) => {
+export const searchAssects = (params) => {
   return api({
-    url: `/books/search?bookName=${params}`,
+    url: `/assects/search?assectName=${params}`,
     method: "get",
     data: params,
   });
@@ -211,10 +211,52 @@ export const deleteSuggest = (params) => {
     data: params,
   });
 };
-// 删除留言
+// 编辑留言
 export const editSuggest = (params) => {
   return api({
     url: `/suggest/edit`,
+    method: "post",
+    data: params,
+  });
+};
+
+// TODO：角色管理API
+// 获取所有角色列表
+export const getRoleList = (params) => {
+  return api({
+    url: `/role`,
+    method: "get",
+    data: params,
+  });
+};
+// 查询角色
+export const searchRole = (params) => {
+  return api({
+    url: `/role/search?rolename=${params}`,
+    method: "get",
+    data: params,
+  });
+};
+// 创建角色
+export const createRole = (params) => {
+  return api({
+    url: `/role/add`,
+    method: "post",
+    data: params,
+  });
+};
+// 删除角色
+export const deleteRole = (params) => {
+  return api({
+    url: `/role/delete`,
+    method: "post",
+    data: params,
+  });
+};
+// 编辑角色
+export const editRole = (params) => {
+  return api({
+    url: `/role/edit`,
     method: "post",
     data: params,
   });

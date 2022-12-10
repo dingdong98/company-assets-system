@@ -14,7 +14,7 @@
           <img src="../assets/imgs/avatar.jpeg" alt="" srcset="" />
           <el-dropdown>
             <span class="el-dropdown-link">
-              叮咚管理员
+              {{ $store.state.LoginInfo }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">

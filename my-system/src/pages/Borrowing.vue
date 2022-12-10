@@ -88,8 +88,8 @@ import {
   createBorrow,
   searchBorrow,
   returnBorrow,
-  getAssetsClassify,
-  getAssetsList,
+  getAssectsClassify,
+  getAssectsList,
 } from "../utils/request";
 import Breadcrumb from "../components/Breadcrumb";
 import Eltable from "../components/Eltable";
@@ -170,8 +170,8 @@ export default {
     },
     // 获取所有图书
     async getAllBooks() {
-      const res1 = await getAssetsClassify();
-      const res2 = await getAssetsList();
+      const res1 = await getAssectsClassify();
+      const res2 = await getAssectsList();
       res1.data.filter((item1) => {
         res2.data.filter((item2) => {
           if (item1.className === item2.className) {

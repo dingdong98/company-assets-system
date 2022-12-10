@@ -23,7 +23,6 @@
                 <div v-html="captchaUrl" @click="updateCaptcha"></div>
               </el-col>
             </el-row>
-            <!-- <span>2357</span> -->
           </el-form-item>
           <el-form-item> </el-form-item>
           <el-form-item style="text-align: right">
@@ -77,6 +76,8 @@ export default {
           }
           this.$router.replace({ name: "index" });
           this.$message.success(res.msg);
+          this.$store.commit('setLoginInfo',this.loginForm.name)
+          this.$store.commit('setTokenInfo',res.token)
           sessionStorage.setItem("token", res.token);
         }
       });

@@ -101,7 +101,7 @@ import {
   createClassify,
   deleteClassify,
   editClassify,
-  getAssetsClassify,
+  getAssectsClassify,
   searchClassify,
 } from "../utils/request";
 export default {
@@ -130,7 +130,7 @@ export default {
   methods: {
     // 获取分类
     async getClassify() {
-      const res = await getAssetsClassify();
+      const res = await getAssectsClassify();
       if (res.code !== 0) {
         return this.$message.error("获取分类失败！");
       }

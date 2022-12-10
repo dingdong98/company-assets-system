@@ -298,9 +298,7 @@ export default {
       } else {
         userInfo.status = 0;
       }
-      console.log(userInfo);
       const res = await editUser(userInfo);
-      console.log(res);
       if (res.code !== 0) {
         this.$message.error("编辑失败！");
       }

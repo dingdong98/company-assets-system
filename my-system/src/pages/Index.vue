@@ -10,7 +10,7 @@
             <div class="userInfo">
               <img src="../assets/imgs/avatar.jpeg" alt="" srcset="" />
               <div class="userName">
-                <span>叮咚</span>
+                <span>{{ $store.state.LoginInfo }}</span>
                 <span>超级管理员</span>
               </div>
             </div>
@@ -88,6 +88,8 @@ export default {
     };
   },
   mounted() {
+    console.log(this.$store.state.LoginInfo);
+    console.log(this.$store.state.token);
     // 获取用户列表
     this.getUserList();
     // 基于准备好的dom，初始化echarts实例

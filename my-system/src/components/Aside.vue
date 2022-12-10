@@ -40,7 +40,7 @@ export default {
           id: 2,
           authName: "资产管理",
           iconPath: "zichanguanli",
-          path: "home/library",
+          path: "home/assets",
         },
         {
           id: 3,

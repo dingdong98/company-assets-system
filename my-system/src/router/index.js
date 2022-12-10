@@ -3,7 +3,7 @@ import vueRouter from "vue-router";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Index from "../pages/Index";
-import Library from "../pages/Library";
+import Assets from "../pages/Assets";
 import Classification from "../pages/Classification";
 import Borrowing from "../pages/Borrowing";
 import Users from "../pages/Users";
@@ -29,7 +29,7 @@ const router = new vueRouter({
       component: Home,
       children: [
         { name: "index", path: "index", component: Index },
-        { name: "library", path: "library", component: Library },
+        { name: "assets", path: "assets", component: Assets },
         {
           name: "classification",
           path: "classification",
