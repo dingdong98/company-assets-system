@@ -195,7 +195,6 @@ export default {
   data() {
     return {
       breadcrumbList: ["您的位置", "用户管理"],
-      // account: '',
       userName: "",
       userList: [],
       currentPage: 1,
@@ -277,7 +276,6 @@ export default {
     deleteUser(userId) {
       this.$confirm("确认删除？").then(async () => {
         const res = await deleteUser({ userId });
-        console.log(res);
         if (res.code !== 0) {
           return this.$message.error("删除失败！");
         }

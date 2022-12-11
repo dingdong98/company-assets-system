@@ -194,7 +194,9 @@ export default {
     async editSugget(row) {
       row.createTime = dayjs(row.createTime).format("YYYY-MM-DD HH:mm:ss");
       row.updateTime = dayjs(row.updateTime).format("YYYY-MM-DD HH:mm:ss");
-      this.editSuggetList = row;
+      // 浅拷贝
+      let editObj = row;
+      this.editSuggetList = editObj;
       this.editModel = true;
     },
     // 编辑提交建议

@@ -23,12 +23,21 @@
       border
       style="width: 100%"
     >
+      <el-table-column label="ID" type="index"></el-table-column>
       <el-table-column prop="assectName" label="资产名称"></el-table-column>
       <el-table-column prop="author" label="资产归属人"></el-table-column>
       <el-table-column prop="classify" label="资产分类"></el-table-column>
       <el-table-column prop="price" label="资产单价"></el-table-column>
       <el-table-column prop="number" label="库存数量"></el-table-column>
-      <el-table-column prop="photo" label="资产图片"></el-table-column>
+      <el-table-column prop="photo" label="资产图片">
+        <template slot-scope="scope">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="scope.row.photo"
+            :preview-src-list="photoList"
+          ></el-image>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="240px">
         <template slot-scope="scope">
           <el-button
@@ -66,15 +75,21 @@
     <el-dialog
       title="添加资产"
       :visible.sync="addAssectDialog"
-      width="50%"
+      width="40%"
       :before-close="handleClose"
     >
       <el-form label-width="100px" :model="assectAdd" ref="assectAdd">
         <el-form-item label="资产名称">
-          <el-input v-model="assectAdd.assectName"></el-input>
+          <el-input
+            v-model="assectAdd.assectName"
+            placeholder="请输入资产名"
+          ></el-input>
         </el-form-item>
         <el-form-item label="资产归属人">
-          <el-input v-model="assectAdd.author"></el-input>
+          <el-input
+            v-model="assectAdd.author"
+            placeholder="请输入归属人"
+          ></el-input>
         </el-form-item>
         <el-form-item label="资产类别">
           <el-select
@@ -92,17 +107,40 @@
         </el-form-item>
 
         <el-form-item label="资产价格">
-          <el-input v-model="assectAdd.price"></el-input>
+          <el-input
+            v-model="assectAdd.price"
+            placeholder="请输入资产单价"
+          ></el-input>
         </el-form-item>
         <el-form-item label="库存数量">
-          <el-input v-model="assectAdd.number"></el-input>
+          <el-input
+            v-model="assectAdd.number"
+            placeholder="请输入资产数量"
+          ></el-input>
         </el-form-item>
         <el-form-item label="详细介绍">
           <el-input
+            placeholder="请添加详细的备注"
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4 }"
             v-model="assectAdd.introduction"
           ></el-input>
+        </el-form-item>
+        <el-form-item label="上传图片">
+          <el-upload
+            class="avatar-uploader"
+            action="http://127.0.0.1:3007/api/uploads"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+          >
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              class="avatar"
+              style="width: 100px; height: 100x"
+            />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -182,6 +220,22 @@
         <el-form-item label="介绍">
           <el-input v-model="assectEdit.introduction"></el-input>
         </el-form-item>
+        <el-form-item label="上传图片">
+          <el-upload
+            class="avatar-uploader"
+            action="http://127.0.0.1:3007/api/uploads"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+          >
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              class="avatar"
+              style="width: 100px; height: 100x"
+            />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="assectEditDialog = false">取 消</el-button>
@@ -194,6 +248,7 @@
 </template>
 
 <script>
+import { setPhoto, getAssectsList } from "../utils/request";
 export default {
   props: [
     "assectsArr",
@@ -205,6 +260,9 @@ export default {
   ],
   data() {
     return {
+      imageUrl: "",
+      filename: "",
+      photoList: [],
       currentPage: 1,
       pageSize: 8,
       currentPage4: 1,
@@ -238,8 +296,9 @@ export default {
       this.addAssectDialog = true;
     },
     // 提交资产信息
-    submitAdd(addForm) {
-      this.createAssect(addForm);
+    async submitAdd(addForm) {
+      this.createAssect(addForm, this.filename);
+      await setPhoto({ ...addForm, filename: this.filename });
       this.assectAdd = {};
       this.addAssectDialog = false;
     },
@@ -255,7 +314,7 @@ export default {
     },
     // 删除资产
     deleteAssect(assectId) {
-      console.log(assectId)
+      console.log(assectId);
       this.deleteAssectById(assectId);
     },
     // before-close 仅当用户通过点击关闭图标或遮罩关闭 Dialog 时起效
@@ -267,22 +326,51 @@ export default {
     // 提交编辑后的资产信息
     submitEdit(assectInfo) {
       this.$confirm("确认提交？")
-        .then(() => {
+        .then(async () => {
           this.editAssectInfo(assectInfo);
+          const res = await setPhoto({
+            ...assectInfo,
+            filename: this.filename,
+          });
+          if (res.code !== 0) {
+            return this.$message.error("修改资产信息失败");
+          }
           this.assectEditDialog = false;
         })
         .catch((error) => {
           this.$message.error(error);
         });
     },
+    // 上传图片成功
+    async handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.filename = res.data.filename;
+    },
+    // 获取资产图片列表
+    async getAssectPhotoList() {
+      const res = await getAssectsList();
+      const photoArr = [];
+      for (let item of res.data) {
+        photoArr.push(item.photo);
+      }
+      this.photoList = photoArr;
+    },
   },
   mounted() {
-    console.log(this.assectsArr);
+    this.getAssectPhotoList();
   },
 };
 </script>
 
 <style lang="less" scoped>
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
 .searchAndAdd {
   // margin-top: 20px;
   width: 100%;
@@ -295,5 +383,12 @@ export default {
 }
 .margin-left-10 {
   margin-left: 10px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 </style>

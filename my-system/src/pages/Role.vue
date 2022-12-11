@@ -122,6 +122,7 @@ export default {
       this.roleList = res.data;
     },
     showEditRoleModel(row) {
+      // 浅拷贝
       let roleObj = { ...row };
       this.editRole = roleObj;
       this.editRoleModel = true;

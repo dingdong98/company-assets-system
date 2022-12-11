@@ -25,6 +25,7 @@ import {
   editAssects,
   createAssects,
   searchAssects,
+  setPhoto,
 } from "../utils/request";
 export default {
   name: "Assets",
@@ -40,19 +41,18 @@ export default {
   },
   components: { Breadcrumb, AssectsTable },
   mounted() {
-    this.getBooksList();
+    this.getAssectsList();
     this.getClassify();
   },
   methods: {
     // 获取资产列表
-    async getBooksList() {
+    async getAssectsList() {
       try {
         const res = await getAssectsList();
         if (res.code !== 0) {
           return this.$message.error("获取资产列表数据失败！");
         }
         this.assectsArr = res.data;
-        console.log(this.assectsArr);
       } catch (error) {
         this.$message.error(error);
       }
@@ -77,13 +77,13 @@ export default {
     // 删除资产
     deleteAssectById(assectId) {
       this.$confirm("是否删除").then(async () => {
-        console.log(assectId)
+        console.log(assectId);
         const res = await deleteAssects({ assectId });
         if (res.code !== 0) {
           return this.$message.error("删除失败!");
         }
         this.$message.success("删除成功");
-        this.getBooksList();
+        this.getAssectsList();
       });
     },
     // 编辑资产
@@ -94,20 +94,27 @@ export default {
         return this.$message.error("编辑失败");
       }
       this.$message.success(res.msg);
-      this.getBooksList();
+      this.getAssectsList();
     },
     // 创建资产
-    async createAssect(assectInfo) {
+    async createAssect(assectInfo, filename) {
+      console.log(filename);
+      console.log(assectInfo);
       const dateTime = new Date();
       assectInfo.createTime = this.$moment(dateTime).format(
         "YYYY-MM-DD HH:DD:SS"
       );
-      const res = await createAssects(assectInfo);
-      if (res.code !== 0) {
+      const res1 = await createAssects(assectInfo);
+      if (res1.code !== 0) {
         return this.$message.error("创建失败");
       }
-      this.$message.success(res.msg);
-      this.getBooksList();
+      const res2 = await setPhoto({ ...assectInfo, filename });
+      if (res2.code !== 0) {
+        return this.$message.error("上传图片失败");
+      }
+      this.$message.success(res1.msg);
+      this.getAssectsList();
+      this.$router.go(0)  //刷新页面
     },
     // 查询资产
     async searchAssect(keyword) {

@@ -1,5 +1,31 @@
 import api from "./api";
 
+// 上传图片
+export const uploadPhoto = (params) => {
+  return api({
+    url: `/uploads`,
+    method: "post",
+    data: params,
+  });
+};
+
+// 获取图片
+export const postPhoto = (params) => {
+  return api({
+    url: `/uploads/photo/:filename`,
+    method: "get",
+    data: params,
+  });
+};
+// 设置图片url地址
+export const setPhoto = (params) => {
+  return api({
+    url: `/uploads/setphoto`,
+    method: "post",
+    data: params,
+  });
+};
+
 // TODO:登录页面API
 // 获取验证码
 export const getCode = (params) => {
@@ -261,3 +287,28 @@ export const editRole = (params) => {
     data: params,
   });
 };
+
+// TODO: 系统日志API
+export const getLogList = (params) => {
+  return api({
+    url: `/log`,
+    method: "get",
+    data: params,
+  });
+};
+
+export const editLog = (params) => {
+  return api({
+    url: `/log/edit`,
+    method: "post",
+    data: params,
+  })
+}
+
+export const addLog = (params) => {
+  return api({
+    url: `/log/add`,
+    method: 'post',
+    data:params
+  })
+}

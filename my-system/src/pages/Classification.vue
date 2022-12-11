@@ -6,7 +6,7 @@
       <!-- 查询分类和添加分类 -->
       <div class="searchAndAdd">
         <el-input
-          placeholder="请输入分类名"
+          placeholder="请输入资产分类名称"
           suffix-icon="el-icon-search"
           v-model="keyword"
         ></el-input>
@@ -26,10 +26,9 @@
         style="width: 100%"
       >
         <el-table-column label="ID" type="index"></el-table-column>
-        <el-table-column prop="className" label="分类名"></el-table-column>
+        <el-table-column prop="className" label="资产分类"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间"> </el-table-column>
-        <el-table-column prop="note" label="备注"></el-table-column>
+        <el-table-column prop="note" label="备注信息"></el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="editClass(scope.row)"
@@ -57,13 +56,19 @@
     </el-card>
 
     <!-- 添加弹框 -->
-    <el-dialog title="添加图书分类" :visible.sync="showAddDialog" width="40%">
+    <el-dialog title="添加资产分类" :visible.sync="showAddDialog" width="40%">
       <el-form :model="addClassData" ref="addRef" label-width="80px">
-        <el-form-item label="分类名" prop="className">
-          <el-input v-model="addClassData.className"></el-input>
+        <el-form-item label="资产分类" prop="className">
+          <el-input
+            v-model="addClassData.className"
+            placeholder="请输入资产分类名称"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="备注" prop="classNote">
-          <el-input v-model="addClassData.note"></el-input>
+        <el-form-item label="备注信息" prop="classNote">
+          <el-input
+            v-model="addClassData.note"
+            placeholder="请输入备注信息"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -82,9 +87,6 @@
         </el-form-item>
         <el-form-item label="创建时间" prop="createTime">
           <el-input v-model="editClassData.createTime" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="更新时间" prop="updateTime">
-          <el-input v-model="editClassData.updateTime" disabled></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -135,14 +137,6 @@ export default {
         return this.$message.error("获取分类失败！");
       }
       this.classificationData = res.data;
-      /* getRequest("/classify").then((resp) => {
-        console.log(resp);
-        if (resp.code !== 0) {
-          this.$message.error("获取图书分类失败！");
-          return;
-        }
-        this.classificationData = resp.data;
-      }); */
     },
     // 添加分类
     async addClassification() {
