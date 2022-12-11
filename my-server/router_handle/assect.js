@@ -1,5 +1,6 @@
 // 导入数据库操作模块
 const db = require("../db/index");
+const multer = require("multer");
 
 // 获取所有资产
 exports.borrow = (req, res) => {
@@ -70,4 +71,23 @@ exports.delete = (req, res) => {
       msg: "删除成功！",
     });
   });
+};
+
+let storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, "public/images");
+  },
+  filename(req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+let upload = multer({ storage: storage });
+
+// 上传资产图片中间件-1
+exports.multer = upload.single("file");
+// 上传资产up图片中间件-2
+exports.upload = (req, res) => {
+  let file = req.file;
+  console.log("文件名", file.filename);
+  res.send(file);
 };

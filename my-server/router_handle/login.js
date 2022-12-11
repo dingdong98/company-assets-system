@@ -14,7 +14,7 @@ let randomCode = "";
 // 用户登录
 exports.login = (req, res) => {
   const adminInfo = req.body;
-  console.log("1", adminInfo);
+  console.log(adminInfo)
   const sql = "select * from users where account = ?";
   db.query(sql, adminInfo.name, (err, results) => {
     if (err) return res.cc(err);

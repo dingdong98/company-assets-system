@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 const app = express();
 
 // 导入登录路由
@@ -16,7 +17,14 @@ const usersRouter = require("./router/users");
 const suggestRouter = require("./router/suggest");
 // 导入角色管理路由
 const roleRouter = require("./router/role");
+// 导入文件管理路由
+const fileRouter = require("./router/file");
+// 导入系统日志路由
+const logRouter = require("./router/log");
 
+app.use(express.static(path.join(__dirname, "public"))); //设置在public下查找资源(以public为根去找静态资源)
+
+// 导入全局配置
 const joi = require("joi");
 const config = require("./config");
 // 安装cors中间件，解决跨域
@@ -25,7 +33,13 @@ const cors = require("cors");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // 使用cors
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    Credential: "true",
+  })
+);
+// 封装全局错误处理函数
 app.use((req, res, next) => {
   // code默认为1，表示失败的情况
   // err 可能是一个错误对象，也可能是一个表示错误的字符串
@@ -45,6 +59,8 @@ app.use("/api", assectRouter);
 app.use("/api", usersRouter);
 app.use("/api", suggestRouter);
 app.use("/api", roleRouter);
+app.use("/api", fileRouter);
+app.use("/api", logRouter);
 
 app.use((err, req, res, next) => {
   // 数据验证失败
