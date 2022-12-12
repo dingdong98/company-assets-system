@@ -56,8 +56,7 @@ exports.add = (req, res) => {
 exports.returnBook = (req, res) => {
   const body = req.body;
   console.log(body);
-  const sql =
-    "update borrow set borrowStatus = 0, returnTime = ? where id = ?";
+  const sql = "update borrow set borrowStatus = 0, returnTime = ? where id = ?";
   db.query(sql, [body.returnTime, parseInt(body.id)], (err, results) => {
     if (err) return res.cc(err);
     res.send({

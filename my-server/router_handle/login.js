@@ -32,6 +32,7 @@ exports.login = (req, res) => {
     res.send({
       code: 0,
       msg: "登录成功！",
+      data: results[0],
       token: "Bearer " + tokenStr,
     });
   });
@@ -50,5 +51,4 @@ exports.captcha = (req, res) => {
   res.status(200).send(captcha.data);
   // 生成的随机值
   randomCode = captcha.text.toLowerCase();
-  console.log(randomCode);
 };
