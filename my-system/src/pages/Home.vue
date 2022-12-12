@@ -64,7 +64,8 @@ export default {
         .then(() => {
           // 退出移除token，并跳转回登录界面
           sessionStorage.removeItem("token");
-          this.$router.replace({ name: "login" });
+          this.$store.commit("setTokenInfo", null);
+          this.$router.replace({ path: "/login" });
         })
         .catch((error) => {
           this.$message.error(error);

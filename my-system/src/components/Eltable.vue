@@ -3,15 +3,16 @@
     <!-- 查询借阅和添加借阅 -->
     <div class="searchAndAdd">
       <el-input
-        placeholder="请输入账号名"
+        placeholder="请输入用户名"
         suffix-icon="el-icon-search"
         v-model="localKeyword"
       ></el-input>
       <el-button type="primary" @click="searchAccount">查询</el-button>
       <el-button type="primary" v-if="tabName === 'second'" @click="add"
-        >添加</el-button
+        >添加租借信息</el-button
       >
     </div>
+    <!-- 主体 -->
     <el-table
       :data="
         tableArr.slice((currentPage - 1) * pageSize, currentPage * pageSize)
@@ -20,20 +21,22 @@
       border
       style="width: 100%"
     >
-      <el-table-column prop="account" label="用户名"> </el-table-column>
-      <el-table-column prop="borrowTime" label="借书时间"> </el-table-column>
-      <el-table-column prop="planReturnTime" label="计划还书时间">
+      <el-table-column prop="account" label="账户名"> </el-table-column>
+      <el-table-column prop="bookName" label="资产名称"> </el-table-column>
+      <el-table-column prop="borrowTime" label="租借时间"> </el-table-column>
+      <el-table-column prop="planReturnTime" label="计划归还时间">
       </el-table-column>
-      <el-table-column prop="returnTime" label="还书时间"> </el-table-column>
-      <el-table-column prop="bookName" label="图书名称"> </el-table-column>
+      <el-table-column prop="returnTime" label="实际归还时间">
+      </el-table-column>
       <el-table-column label="操作" v-if="tabName === 'second'">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="returnBook(scope.row)"
-            >还书</el-button
+            >归还</el-button
           >
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页栏 -->
     <el-pagination
       style="margin-top: 20px; text-align: right"
       @size-change="handleSizeChange"
@@ -63,7 +66,7 @@ export default {
       currentPage: 1,
       pageSize: 8,
       currentPage4: 1,
-      localKeyword:this.keyword
+      localKeyword: this.keyword,
     };
   },
   methods: {
@@ -83,7 +86,7 @@ export default {
     add() {
       this.getAddBtn(true);
     },
-    // 还书（更新数据库中当前数据，status改为0，日期改为当前时间）
+    // 归还（更新数据库中当前数据，status改为0，日期改为当前时间）
     returnBook(scope) {
       this.returnBookById(scope.id);
     },

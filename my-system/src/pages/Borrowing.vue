@@ -2,9 +2,8 @@
   <div class="borrowContainer">
     <!-- 面包屑 -->
     <Breadcrumb :breadcrumbList="breadcrumbList"></Breadcrumb>
-    <!-- <el-card> -->
     <el-tabs type="border-card" v-model="tabName" style="margin-top: 20px">
-      <el-tab-pane label="所有借阅" name="first">
+      <el-tab-pane label="租借资产" name="first">
         <Eltable
           :tableArr="tableArr"
           :getKeyword="getKeyword"
@@ -12,7 +11,7 @@
           :tabName="tabName"
         ></Eltable>
       </el-tab-pane>
-      <el-tab-pane label="待还借阅" name="second">
+      <el-tab-pane label="待还租借" name="second">
         <Eltable
           :tableArr="toBePaid"
           :getKeyword="getKeyword"
@@ -22,7 +21,7 @@
           :returnBookById="returnBookById"
         ></Eltable>
       </el-tab-pane>
-      <el-tab-pane label="逾期借阅" name="third">
+      <el-tab-pane label="过期租借" name="third">
         <Eltable
           :tableArr="overdue"
           :getKeyword="getKeyword"
@@ -31,8 +30,9 @@
         ></Eltable>
       </el-tab-pane>
     </el-tabs>
+    <!-- 弹出框 -->
     <el-dialog
-      title="添加借阅信息"
+      title="添加租借资产"
       :visible.sync="isAddBorrowDialog"
       width="40%"
       @close="closeDialog"
@@ -43,17 +43,17 @@
         ref="borrowRef"
         :rules="borrowRules"
       >
-        <el-form-item label="用户名" prop="account">
+        <el-form-item label="租借人" prop="account">
           <el-input v-model="addBorrowData.account"></el-input>
         </el-form-item>
-        <el-form-item label="图书名" prop="bookName">
+        <el-form-item label="资产信息" prop="bookName">
           <el-cascader
             v-model="addBorrowData.bookName"
             :options="bookOptions"
             @change="handleChange"
           ></el-cascader>
         </el-form-item>
-        <el-form-item label="借阅时间" prop="borrowTime">
+        <el-form-item label="租借时间" prop="borrowTime">
           <el-date-picker
             v-model="addBorrowData.borrowTime"
             type="date"
@@ -113,6 +113,7 @@ export default {
         borrowTime: "",
         planReturnTime: "",
       },
+      // 校验规则
       borrowRules: {
         account: [{ required: true, message: "请输入用户名", trigger: "blur" }],
         borrowTime: [

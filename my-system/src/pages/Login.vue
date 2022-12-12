@@ -66,18 +66,15 @@ export default {
     submitForm() {
       this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          console.log(this.loginForm);
           const res = await loginSubmit(this.loginForm);
-          console.log(res);
-          // 响应出错
           if (res.code !== 0) {
             this.updateCaptcha();
             return this.$message.error(res.msg);
           }
-          this.$router.replace({ name: "index" });
-          this.$message.success(res.msg);
-          this.$store.commit('setLoginInfo',this.loginForm.name)
-          this.$store.commit('setTokenInfo',res.token)
+          this.$router.replace({ path: "/home/index" });
+          this.$message.success(res.msg); //消息提示
+          this.$store.commit("setLoginId", res.data.role);
+          this.$store.commit("setTokenInfo", res.token);
           sessionStorage.setItem("token", res.token);
         }
       });
@@ -92,7 +89,7 @@ export default {
         const res = await getCode();
         this.captchaUrl = res;
       } catch (error) {
-        console.log(error);
+        this.$message.error(error);
       }
     },
   },

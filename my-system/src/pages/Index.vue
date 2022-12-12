@@ -88,8 +88,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$store.state.LoginInfo);
-    console.log(this.$store.state.token);
     // 获取用户列表
     this.getUserList();
     // 基于准备好的dom，初始化echarts实例
