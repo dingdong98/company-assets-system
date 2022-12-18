@@ -42,8 +42,11 @@
         ></el-table-column>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="editSugget(scope.row)"
-            v-if="permissionID"
+            <el-button
+              type="primary"
+              size="mini"
+              @click="editSugget(scope.row)"
+              v-if="permissionID"
               >编辑</el-button
             >
             <el-button
