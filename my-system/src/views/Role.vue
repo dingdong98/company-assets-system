@@ -176,11 +176,4 @@ export default {
 .searchAndAdd .el-input {
   width: 200px;
 }
-.el-table .warning-row {
-  background: rgb(244, 165, 17);
-}
-
-.el-table .success-row {
-  background: #65e520;
-}
 </style>

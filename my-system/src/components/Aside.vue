@@ -78,7 +78,12 @@ export default {
           iconPath: "liuyanjianyi",
           path: "home/suggest",
         },
-      
+        {
+          id: 9,
+          authName: "个人中心",
+          iconPath: "xwtubiaoku-20",
+          path: "home/personal",
+        },
       ],
     };
   },

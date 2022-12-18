@@ -140,7 +140,7 @@
           <el-input v-model="createUser.account"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="createUser.password" disabled></el-input>
+          <el-input v-model="createUser.password"></el-input>
         </el-form-item>
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="createUser.userName"></el-input>
@@ -216,11 +216,11 @@ export default {
       },
       roleOptions: [
         {
-          value: 1,
+          value: 0,
           label: "超级管理员",
         },
         {
-          value: 0,
+          value: 1,
           label: "普通用户",
         },
       ],

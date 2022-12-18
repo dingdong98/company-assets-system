@@ -1,15 +1,16 @@
 import Vue from "vue";
 import vueRouter from "vue-router";
-import Login from "../pages/Login";
-import Home from "../pages/Home";
-import Index from "../pages/Index";
-import Assets from "../pages/Assets";
-import Classification from "../pages/Classification";
-import Borrowing from "../pages/Borrowing";
-import Users from "../pages/Users";
-import Role from "../pages/Role";
-import Log from "../pages/Log";
-import Suggest from "../pages/Suggest.vue";
+import Login from "../views/Login";
+import Home from "../views/Home";
+import Index from "../views/Index";
+import Assets from "../views/Assets";
+import Classification from "../views/Classification";
+import Borrowing from "../views/Borrowing";
+import Users from "../views/Users";
+import Role from "../views/Role";
+import Log from "../views/Log";
+import Suggest from "../views/Suggest.vue";
+import Personal from "../views/Personal.vue";
 import store from "@/utils/store";
 
 Vue.use(vueRouter);
@@ -41,13 +42,21 @@ const router = new vueRouter({
         { name: "role", path: "role", component: Role },
         { name: "log", path: "log", component: Log },
         { name: "suggest", path: "suggest", component: Suggest },
+        { name: "Personal", path: "personal", component: Personal },
       ],
     },
   ],
 });
 
 // 前端权限控制
-const whileList = ["/home/index", "/home/assets", "/home/classification"];
+const whileList = [
+  "/home/index",
+  "/home/assets",
+  "/home/classification",
+  "/home/log",
+  "/home/suggest",
+  "/home/personal",
+];
 router.beforeEach((to, from, next) => {
   const token = store.getters.token;
   // 登录成功，返回token

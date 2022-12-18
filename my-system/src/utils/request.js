@@ -129,7 +129,7 @@ export const searchClassify = (params) => {
 };
 
 // TODO: 审批管理API
-// 获取借用列表
+// 获取租借列表
 export const getBorrowList = (params) => {
   return api({
     url: `/borrow`,
@@ -156,11 +156,43 @@ export const searchBorrow = ({ account, status }) => {
 // 归还借用
 export const returnBorrow = (params) => {
   return api({
-    url: `/borrow/returnBook`,
+    url: `/borrow/return`,
     method: "post",
     data: params,
   });
 };
+// 获取未归还列表
+export const getPlanTime = (params) => {
+  return api({
+    url: `/borrow/late`,
+    method: "get",
+    data: params,
+  });
+}
+// 修改未按期归还的数据
+export const PostPlanStatus = (params) => {
+  return api({
+    url: `borrow/late/return`,
+    method: "post",
+    data: params,
+  });
+}
+// 申请租借
+export const applyBorrow = (params) => {
+  return api({
+    url: `/borrow/apply`,
+    method: "post",
+    data: params,
+  });
+}
+// 同意租借
+export const agreeBorrow = (params) => {
+  return api({
+    url: `/borrow/agree`,
+    method: "post",
+    data: params,
+  });
+}
 
 // TODO: 用户管理API
 // 获取所有用户
@@ -289,6 +321,7 @@ export const editRole = (params) => {
 };
 
 // TODO: 系统日志API
+// 获取系统日志
 export const getLogList = (params) => {
   return api({
     url: `/log`,
@@ -296,7 +329,7 @@ export const getLogList = (params) => {
     data: params,
   });
 };
-
+// 编辑系统日志
 export const editLog = (params) => {
   return api({
     url: `/log/edit`,

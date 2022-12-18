@@ -43,12 +43,14 @@
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="editSugget(scope.row)"
+            v-if="permissionID"
               >编辑</el-button
             >
             <el-button
               type="danger"
               size="mini"
               @click="deleteSuggest(scope.row.id)"
+              v-if="permissionID"
               >删除</el-button
             >
           </template>
@@ -208,6 +210,11 @@ export default {
       this.$message.success("编辑成功");
       this.editModel = false;
       this.getSuggest();
+    },
+  },
+  computed: {
+    permissionID() {
+      return this.$store.state.loginId == 0 ? true : false;
     },
   },
 };

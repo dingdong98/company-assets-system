@@ -6,6 +6,7 @@
       <el-button
         type="primary"
         class="margin-left-10"
+        v-if="permissionID"
         @click="addLogForm = true"
         >创建系统日志</el-button
       >
@@ -31,7 +32,11 @@
         ></el-table-column>
         <el-table-column width="200" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleEdit(scope.row)"
+            <el-button
+              type="primary"
+              size="mini"
+              @click="handleEdit(scope.row)"
+              v-if="permissionID"
               >编辑</el-button
             >
           </template>
@@ -158,6 +163,11 @@ export default {
       this.$message.success("创建系统日志成功");
       this.addLogForm = false;
       this.getLogList();
+    },
+  },
+  computed: {
+    permissionID() {
+      return this.$store.state.loginId == 0 ? true : false;
     },
   },
 };

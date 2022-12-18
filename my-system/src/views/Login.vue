@@ -8,7 +8,7 @@
           :rules="loginRules"
           label-width="80px"
         >
-          <el-form-item label="用户名：" prop="name">
+          <el-form-item label="账号：" prop="name">
             <el-input type="text" v-model="loginForm.name" v-popover:popover />
           </el-form-item>
           <el-form-item label="密 码：" prop="password">
@@ -50,7 +50,7 @@ export default {
       },
       // 校验规则
       loginRules: {
-        name: [{ required: true, message: "请输入用户名！", trigger: "blur" }],
+        name: [{ required: true, message: "请输入账号！", trigger: "blur" }],
         password: [
           { required: true, message: "请输入密码！", trigger: "blur" },
         ],
@@ -73,9 +73,10 @@ export default {
           }
           this.$router.replace({ path: "/home/index" });
           this.$message.success(res.msg); //消息提示
-          this.$store.commit("setLoginId", res.data.role);
-          this.$store.commit("setTokenInfo", res.token);
-          sessionStorage.setItem("token", res.token);
+          this.$store.commit("setLoginId", res.data.role); //保存用户身份ID
+          this.$store.commit("setLoginInfo", res.data); //保存用户登录信息
+          this.$store.commit("setTokenInfo", res.token); //保存用户token令牌
+          sessionStorage.setItem("token", res.token); //清空token
         }
       });
     },

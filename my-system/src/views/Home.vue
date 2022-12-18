@@ -14,7 +14,7 @@
           <img src="../assets/imgs/avatar.jpeg" alt="" srcset="" />
           <el-dropdown>
             <span class="el-dropdown-link">
-              {{ $store.state.LoginInfo }}
+              {{ $store.state.loginInfo.userName }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">

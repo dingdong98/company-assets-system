@@ -33,7 +33,7 @@ export default {
     return {
       breadcrumbList: ["您的位置", "资产管理"],
       tabName: "first",
-      tableArr: [], // 所有图书
+      tableArr: [], 
       toBePaid: [], // 我的借阅
       assectsArr: [], //资产列表
       assectsOptions: [], //  资产分类

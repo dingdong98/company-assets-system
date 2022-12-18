@@ -7,31 +7,34 @@ Vue.use(Vuex);
 
 //1. state用于存放数据
 const state = {
-  setLoginId: '',
+  loginId: "",
+  loginInfo: {},
   token: "",
 };
 // 2.getter用于state中数据加工
 const getters = {
   role: (state) => {
-    return state.setLoginId
+    return state.loginId;
   },
   token: (state) => {
-    return state.token
-  }
+    return state.token;
+  },
 };
 // 3.mutations用于操作数据
 const mutations = {
   setLoginId(state, val) {
-    state.setLoginId = val;
-    console.log(state.setLoginId)
+    state.loginId = val;
+    window.sessionStorage.setItem('loginId',JSON.stringify(state.loginId))
   },
   setTokenInfo(state, val) {
-    state.token = val
-  }
+    state.token = val;
+  },
+  setLoginInfo(state, val) {
+    state.loginInfo = val;
+  },
 };
 // 4.actions用于响应组件中的动作
-const actions = {
-};
+const actions = {};
 // 创建并暴露store
 export default new Vuex.Store({
   state,

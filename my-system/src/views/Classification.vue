@@ -11,7 +11,12 @@
           v-model="keyword"
         ></el-input>
         <el-button type="primary" @click="searchClassName">查询</el-button>
-        <el-button type="primary" @click="showAddDialog = true">添加</el-button>
+        <el-button
+          type="primary"
+          @click="showAddDialog = true"
+          v-if="permissionID"
+          >添加</el-button
+        >
       </div>
       <!-- 表格 -->
       <el-table
@@ -31,10 +36,18 @@
         <el-table-column prop="note" label="备注信息"></el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="editClass(scope.row)"
+            <el-button
+              type="primary"
+              size="mini"
+              @click="editClass(scope.row)"
+              v-if="permissionID"
               >编辑</el-button
             >
-            <el-button type="danger" size="mini" @click="delClass(scope.row.id)"
+            <el-button
+              type="danger"
+              size="mini"
+              @click="delClass(scope.row.id)"
+              v-if="permissionID"
               >删除</el-button
             >
           </template>
@@ -208,6 +221,11 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
+    },
+  },
+  computed: {
+    permissionID() {
+      return this.$store.state.loginId == 0 ? true : false;
     },
   },
 };

@@ -12,7 +12,9 @@
       <el-button type="primary" @click="searchAssectName" class="margin-left-10"
         >查询</el-button
       >
-      <el-button type="primary" @click="add">创建</el-button>
+      <el-button type="primary" @click="add" v-if="permissionID"
+        >创建</el-button
+      >
     </div>
     <!-- 主体页面 -->
     <el-table
@@ -44,15 +46,21 @@
             type="success  "
             size="mini"
             @click="detailAssect(scope.row)"
+            v-if="permissionID"
             >详情</el-button
           >
-          <el-button type="primary" size="mini" @click="editAssect(scope.row)"
+          <el-button
+            type="primary"
+            size="mini"
+            @click="editAssect(scope.row)"
+            v-if="permissionID"
             >编辑</el-button
           >
           <el-button
             type="danger"
             size="mini"
             @click="deleteAssect(scope.row.assectId)"
+            v-if="permissionID"
             >删除</el-button
           >
         </template>
@@ -269,11 +277,11 @@ export default {
       assectName: "",
       author: "",
       selectValue: "",
-      assectDetailDialog: false, // 图书详情对话框
+      assectDetailDialog: false,
       assectDetail: {},
-      assectEditDialog: false, // 图书编辑对话框
+      assectEditDialog: false,
       assectEdit: {},
-      addAssectDialog: false, // 添加图书对话框
+      addAssectDialog: false,
       assectAdd: {},
     };
   },
@@ -358,6 +366,11 @@ export default {
   },
   mounted() {
     this.getAssectPhotoList();
+  },
+  computed: {
+    permissionID() {
+      return this.$store.state.loginId == 0 ? true : false;
+    },
   },
 };
 </script>

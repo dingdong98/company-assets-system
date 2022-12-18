@@ -6,7 +6,9 @@ import VueCookies from "vue-cookies";
 import store from "./utils/store";
 import moment from "moment"; //JavaScript日期处理库
 import "element-ui/lib/theme-chalk/index.css";
+import * as echarts from "echarts";
 import "/public/css/iconfont.css";
+Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueCookies);
