@@ -1,7 +1,7 @@
 // 导入数据库操作模块
 const db = require("../db/index");
 // 导入对密码进行加密的bcryptjs
-// const bcryptjs = require('bcryptjs')
+const bcryptjs = require("bcryptjs");
 // 导入生成token字符串的包
 const jwt = require("jsonwebtoken");
 // 导入生成随机验证码包
@@ -13,19 +13,21 @@ let randomCode = "";
 
 // 用户登录
 exports.login = (req, res) => {
-  const adminInfo = req.body;
-  console.log(adminInfo)
+  const userInfo = req.body;
   const sql = "select * from users where account = ?";
-  db.query(sql, adminInfo.name, (err, results) => {
+  db.query(sql, userInfo.name, (err, results) => {
     if (err) return res.cc(err);
-    if (randomCode !== adminInfo.code) return res.cc("验证码输入错误！");
+    if (randomCode !== userInfo.code) return res.cc("验证码输入错误！");
     if (results.length !== 1) return res.cc("登录失败！");
     // 判断密码是否一致
-    if (results[0].password !== adminInfo.password)
-      return res.cc("密码输入错误！");
-    const admin = { ...results[0] };
+    const compareResult = bcryptjs.compareSync(
+      userInfo.password,
+      results[0].password
+    );
+    if (!compareResult) return res.cc("登录失败，密码错误");
+    const user = { ...results[0] };
     // 生成token
-    const tokenStr = jwt.sign(admin, config.jwtSecretKey, {
+    const tokenStr = jwt.sign(user, config.jwtSecretKey, {
       expiresIn: config.expiresIn,
     });
     // 返回信息

@@ -15,7 +15,6 @@ exports.getLog = (req, res) => {
 // 编辑系统日志
 exports.editLog = (req, res) => {
   const { info, id } = req.body;
-  console.log(info);
   const sql = `update log set info = ? where id = ?`;
   db.query(sql, [info, id], (err, results) => {
     if (err) return res.cc(err);

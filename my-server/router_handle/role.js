@@ -40,7 +40,6 @@ exports.add = (req, res) => {
 // 删除角色
 exports.delete = (req, res) => {
   const body = req.body;
-  console.log(body);
   const sql = `delete from role where roleId = ?`;
   db.query(sql, body.roleId, (err, results) => {
     if (err) return res.cc(err);

@@ -7,7 +7,6 @@ exports.getClassify = (req, res) => {
   const sql = "select * from classify order by id DESC";
   db.query(sql, (err, results) => {
     if (err) return res.cc(err);
-    console.log(results);
     // if(results.length !== 1) return res.cc('获取失败！')
     res.send({
       code: 0,
@@ -20,7 +19,6 @@ exports.getClassify = (req, res) => {
 // 添加图书分类
 exports.addClassify = (req, res) => {
   const body = req.body;
-  console.log(body);
   const sql = "insert into classify set ?";
   db.query(sql, body, (err, results) => {
     if (err) return res.cc(err);
@@ -34,7 +32,6 @@ exports.addClassify = (req, res) => {
 // 查询图书分类
 exports.search = (req, res) => {
   const query = req.query;
-  console.log(query);
   let sql = `select * from classify where className like "%${query.className}%"`;
 
   db.query(sql, (err, results) => {
@@ -50,7 +47,6 @@ exports.search = (req, res) => {
 // 编辑图书分类
 exports.edit = (req, res) => {
   const body = req.body;
-  console.log(body);
   let sql =
     "update classify set className = ?, note = ?, updateTime = ? where id = ?";
   db.query(
@@ -69,7 +65,6 @@ exports.edit = (req, res) => {
 // 删除图书分类
 exports.delete = (req, res) => {
   const body = req.body;
-  console.log(body.id);
   let sql = "delete from classify where id = ?";
   db.query(sql, body.id, (err, results) => {
     if (err) return res.cc(err);
